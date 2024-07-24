@@ -1,3 +1,4 @@
+"use client";
 import { Arrow } from "@/assets/Arrow";
 import { View } from "@/assets/View";
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RecordCard } from "@/assets/RecordCard";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useState } from "react";
 
 const data = [
   { title: "Food & Drinks" },
@@ -45,22 +55,30 @@ const cardData = [
   { title: "Food & Drinks", time: "14:00", amount: -1000 },
   { title: "Rent", time: "14:00", amount: 1000 },
 ];
+const maxValue = 1000;
+const minValue = 0;
 export const RecordContainer = () => {
+  const [sliderValue, setSliderValue] = useState([minValue, maxValue]);
   return (
-    <div className="bg-[#f6f6f6] py-[50px] h-screen">
-      <div className="w-[1440px] m-auto border flex">
-        <div className="flex py-[24px] px-[16px] w-[282px] border">
+    <div className="bg-[#f6f6f6] py-6">
+      <div className="w-[1440px] m-auto flex">
+        <div className="flex py-[24px] px-[16px] w-[282px] ">
           <div className="flex flex-col gap-[24px] w-full ">
             <div className="flex flex-col gap-[24px]">
               <div className="font-semibold text-[24px]">Record</div>
-              <Button className="w-full text-white rounded-[20px] flex gap-[5px]">
-                <div className="text-[24px] font-thin">+</div>
-                <div className="font-semibold">Add</div>
-              </Button>
+              <Dialog>
+                <DialogTrigger className="">
+                  <div className="bg-[#0166FF] px-4 w-full text-white rounded-[20px] flex gap-[5px] items-center">
+                    <div className="text-[24px] font-thin">+</div>
+                    <div className="font-semibold">Add</div>
+                  </div>
+                </DialogTrigger>
+                <DialogContent></DialogContent>
+              </Dialog>
               <input
                 placeholder="Search"
                 type="search"
-                className="block border pl-[10px] rounded-sm"
+                className="block pl-[10px] rounded-sm"
               ></input>
             </div>
             <div>
@@ -108,11 +126,15 @@ export const RecordContainer = () => {
                 <Input className="border" type="number" placeholder="1000" />
               </div>
               <Slider defaultValue={[1000]} max={1000} step={1} />
+              <div className="flex justify-between">
+                <div>0</div>
+                <div>1000</div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="border w-full">
-          <div className="flex justify-between pt-[20px]">
+        <div className="w-full">
+          <div className="flex justify-between pt-8">
             <div className="pl-[80px]  w-[180px]">
               <Carousel>
                 <CarouselContent>
@@ -137,7 +159,7 @@ export const RecordContainer = () => {
               </Select>
             </div>
           </div>
-          <div className="w-[full-30px] m-auto rounded-md py-[12px] px-[24px] flex bg-white justify-between items-center mt-[16px] mb-[24px] ml-[30px]">
+          <div className="w-[full-30px] m-auto rounded-md py-[12px] px-[24px] flex bg-white justify-between items-center mt-[16px] ml-[30px]">
             <div className="flex items-center gap-[15px]">
               <Checkbox className="w-[20px] h-[20px]" />
               <div>Select all</div>
@@ -148,16 +170,33 @@ export const RecordContainer = () => {
             </div>
             <div className="text-gray-600">-35,000$</div>
           </div>
-          <div className="flex flex-col gap-[12px] pl-[30px]">
-            {cardData.map((item) => (
-              <RecordCard
-                key={item.title}
-                title={item.title}
-                icon={item.icon}
-                time={item.time}
-                amount={item.amount}
-              />
-            ))}
+          <div className="pl-[30px]">
+            <div className="pb-3 pt-6 font-semibold">Today</div>
+            <div className="flex flex-col gap-[12px] ">
+              {cardData.map((item) => (
+                <RecordCard
+                  key={item.title}
+                  title={item.title}
+                  icon={item.icon}
+                  time={item.time}
+                  amount={item.amount}
+                />
+              ))}
+            </div>
+          </div>
+          <div className="pl-[30px]">
+            <div className="pb-3 pt-6 font-semibold">Yesterday</div>
+            <div className="flex flex-col gap-[12px] ">
+              {cardData.map((item) => (
+                <RecordCard
+                  key={item.title}
+                  title={item.title}
+                  icon={item.icon}
+                  time={item.time}
+                  amount={item.amount}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>

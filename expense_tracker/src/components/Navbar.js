@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 
 export const Navbar = () => {
   return (
-    <div className="w-[1440px] m-auto border flex justify-between bg-white py-[16px]">
+    <div className="w-[1440px] m-auto flex justify-between bg-white py-[16px]">
       <div className="flex items-center gap-[24px]">
-        <Logo />
+        <Logo width="50" />
         <div>Dashboard</div>
         <div>Records</div>
       </div>
