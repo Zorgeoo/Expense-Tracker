@@ -33,6 +33,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
+import { Textarea } from "@/components/ui/textarea";
+
+import { IconName } from "react-icons/lia";
+import { DatePickerDemo } from "@/assets/DatePicker";
+import { FaAnchor } from "react-icons/fa";
+import { FaAngellist } from "react-icons/fa";
+import { FaArtstation } from "react-icons/fa";
+import { FaBiohazard } from "react-icons/fa";
+import { FaUssunnah } from "react-icons/fa";
 
 const data = [
   { title: "Food & Drinks" },
@@ -55,10 +64,52 @@ const cardData = [
   { title: "Food & Drinks", time: "14:00", amount: -1000 },
   { title: "Rent", time: "14:00", amount: 1000 },
 ];
+
+const iconData = [
+  { img: <FaAnchor /> },
+  { img: <FaAngellist /> },
+  { img: <FaArtstation /> },
+  { img: <FaBiohazard /> },
+  { img: <FaUssunnah /> },
+  { img: <FaUssunnah /> },
+  { img: <FaUssunnah /> },
+  { img: <FaUssunnah /> },
+  { img: <FaAnchor /> },
+  { img: <FaAngellist /> },
+  { img: <FaArtstation /> },
+  { img: <FaBiohazard /> },
+  { img: <FaUssunnah /> },
+  { img: <FaUssunnah /> },
+  { img: <FaUssunnah /> },
+  { img: <FaUssunnah /> },
+  { img: <FaAnchor /> },
+  { img: <FaAngellist /> },
+  { img: <FaArtstation /> },
+  { img: <FaBiohazard /> },
+  { img: <FaUssunnah /> },
+  { img: <FaUssunnah /> },
+  { img: <FaUssunnah /> },
+  { img: <FaUssunnah /> },
+  { img: <FaAnchor /> },
+  { img: <FaAngellist /> },
+  { img: <FaArtstation /> },
+  { img: <FaBiohazard /> },
+  { img: <FaUssunnah /> },
+  { img: <FaUssunnah /> },
+];
 const maxValue = 1000;
 const minValue = 0;
 export const RecordContainer = () => {
   const [sliderValue, setSliderValue] = useState([minValue, maxValue]);
+
+  const handleNewValues = (index, newValue) => {
+    const newValues = [...sliderValue];
+    newValues[index] = Number(newValue);
+    setSliderValue(newValues);
+  };
+
+  const [buttonColor, setButtonColor] = useState("transparent");
+  const [incomeButtonColor, setIncomeButtonColor] = useState("transparent");
   return (
     <div className="bg-[#f6f6f6] py-6">
       <div className="w-[1440px] m-auto flex">
@@ -68,12 +119,79 @@ export const RecordContainer = () => {
               <div className="font-semibold text-[24px]">Record</div>
               <Dialog>
                 <DialogTrigger className="">
-                  <div className="bg-[#0166FF] px-4 w-full text-white rounded-[20px] flex gap-[5px] items-center">
+                  <div className="bg-[#0166FF] px-4 w-full text-white rounded-[20px] flex gap-[5px] items-center justify-center">
                     <div className="text-[24px] font-thin">+</div>
                     <div className="font-semibold">Add</div>
                   </div>
                 </DialogTrigger>
-                <DialogContent></DialogContent>
+                <DialogContent className="p-0">
+                  <div className="">
+                    <div className="border-b px-6 py-5 font-semibold text-xl">
+                      Add Record
+                    </div>
+                    <div className="flex">
+                      <div className="w-1/2 py-5 px-6 flex flex-col gap-5 border">
+                        <div className="flex rounded-[20px] bg-[#F3F4F6] w-full">
+                          <Button
+                            className={`"px-5 py-2 w-1/2 rounded-[20px] hover:bg-${buttonColor} text-black bg-${buttonColor}`}
+                            onClick={() => setButtonColor("[#0166FF]")}
+                          >
+                            Expense
+                          </Button>
+                          <Button
+                            className={`"px-5 py-2 w-1/2 rounded-[20px] text-black hover:bg-${incomeButtonColor}  bg-${incomeButtonColor}`}
+                            onClick={() => setIncomeButtonColor("[#16A34A]")}
+                          >
+                            Income
+                          </Button>
+                        </div>
+                        <div>
+                          <div>Amount</div>
+                          <Input type="number" placeholder="₮ 000.00" />
+                        </div>
+                        <div>
+                          <div>Category</div>
+                          <Select>
+                            <SelectTrigger className="w-[180px]">
+                              <SelectValue placeholder="Choose" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="new">Newest first</SelectItem>
+                              <SelectItem value="old">Oldest first</SelectItem>
+                              <SelectItem value="system">System</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="flex gap-3 ">
+                          <div className="flex-1">
+                            <div>Date</div>
+                            <DatePickerDemo />
+                          </div>
+                          <div>
+                            <div className="flex-1">Time</div>
+                            <DatePickerDemo />
+                          </div>
+                        </div>
+                        <Button className="bg-[#0166FF]" type="submit">
+                          Add Record
+                        </Button>
+                      </div>
+                      <div className="w-1/2 py-5 px-6 border">
+                        <div>
+                          <div>Payee</div>
+                          <Input type="text" placeholder="Write here" />
+                        </div>
+                        <div>
+                          <div className="mt-[19px]">Note</div>
+                          <Textarea
+                            className="h-[246px]"
+                            placeholder="Write here"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </DialogContent>
               </Dialog>
               <input
                 placeholder="Search"
@@ -114,21 +232,85 @@ export const RecordContainer = () => {
                   </div>
                 ))}
               </div>
-              <Button className="hover:bg-[#0166FF] hover:text-white w-full rounded-[20px] text-black bg-transparent flex gap-[5px] justify-start items-center">
-                <div className="text-[24px] font-thin">+</div>
-                <div className="">Add Category</div>
-              </Button>
+
+              <Dialog>
+                <DialogTrigger>
+                  <div className="hover:bg-[#0166FF] hover:text-white w-full rounded-[20px] text-black bg-transparent flex gap-[5px] justify-start items-center px-10">
+                    <div className="text-[24px] font-thin">+</div>
+                    <div className="">Add Category</div>
+                  </div>
+                </DialogTrigger>
+                <DialogContent className="p-0">
+                  <div className="py-5 px-6 border-b text-xl font-semibold">
+                    Add Category
+                  </div>
+                  <div className="p-6 flex flex-col gap-8">
+                    <div className="flex justify-around gap-3">
+                      <Select className="w-1/2">
+                        <SelectTrigger className="w-[100px]">
+                          <SelectValue placeholder={<FaAnchor />} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <div className="grid grid-cols-5 p-6 gap-3">
+                            {iconData.map((item, index) => (
+                              <SelectItem
+                                className="w-fit h-fit flex justify-center items-center"
+                                key={index}
+                                value={item}
+                              >
+                                <div className="self-center p-0">
+                                  {item.img}
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </div>
+                        </SelectContent>
+                      </Select>
+                      <Select className="w-1/2">
+                        <SelectTrigger className="w-[280px]">
+                          <SelectValue placeholder="Name" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="new">Newest first</SelectItem>
+                          <SelectItem value="old">Oldest first</SelectItem>
+                          <SelectItem value="system">System</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <Button className="rounded-[20px] w-full bg-[#16A34A]">
+                      Add Category
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
             <div className="flex flex-col gap-[16px]">
               <div className="font-semibold">Amount range</div>
               <div className="flex gap-[16px]">
-                <Input className="border" type="number" placeholder="0" />
-                <Input className="border" type="number" placeholder="1000" />
+                <Input
+                  className="border"
+                  type="number"
+                  placeholder={sliderValue[0]}
+                  onChange={(e) => handleNewValues(0, e.target.value)}
+                />
+                <Input
+                  className="border"
+                  type="number"
+                  placeholder={sliderValue[1]}
+                  onChange={(e) => handleNewValues(1, e.target.value)}
+                />
               </div>
-              <Slider defaultValue={[1000]} max={1000} step={1} />
+              <Slider
+                defaultValue={[1000]}
+                max={maxValue}
+                min={minValue}
+                onValueChange={(newValues) => setSliderValue(newValues)}
+                step={1}
+                value={sliderValue}
+              />
               <div className="flex justify-between">
-                <div>0</div>
-                <div>1000</div>
+                <div>{sliderValue[0]}</div>
+                <div>{sliderValue[1]}</div>
               </div>
             </div>
           </div>
