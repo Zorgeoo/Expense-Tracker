@@ -43,6 +43,14 @@ import { FaArtstation } from "react-icons/fa";
 import { FaBiohazard } from "react-icons/fa";
 import { FaUssunnah } from "react-icons/fa";
 import AddRecord from "./AddRecord";
+import { DarkBlue } from "../../public/darkBlue";
+import { Blue } from "../../public/blue";
+import { Green } from "../../public/green";
+import { Yellow } from "../../public/yellow";
+import { Orange } from "../../public/orange";
+import { Purple } from "../../public/purple";
+import { Red } from "../../public/red";
+import AddCategory from "@/assets/AddCategory";
 
 const data = [
   { title: "Food & Drinks" },
@@ -156,57 +164,7 @@ export const RecordContainer = () => {
                   </div>
                 ))}
               </div>
-
-              <Dialog>
-                <DialogTrigger>
-                  <div className="hover:bg-[#0166FF] hover:text-white w-full rounded-[20px] text-black bg-transparent flex gap-[5px] justify-start items-center px-10">
-                    <div className="text-[24px] font-thin">+</div>
-                    <div className="">Add Category</div>
-                  </div>
-                </DialogTrigger>
-                <DialogContent className="p-0">
-                  <div className="py-5 px-6 border-b text-xl font-semibold">
-                    Add Category
-                  </div>
-                  <div className="p-6 flex flex-col gap-8">
-                    <div className="flex justify-around gap-3">
-                      <Select className="w-1/2">
-                        <SelectTrigger className="w-[100px]">
-                          <SelectValue placeholder={<FaAnchor />} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <div className="grid grid-cols-5 p-6 gap-3">
-                            {iconData.map((item, index) => (
-                              <SelectItem
-                                className="w-fit h-fit flex justify-center items-center"
-                                key={index}
-                                value={item}
-                              >
-                                <div className="self-center p-0">
-                                  {item.img}
-                                </div>
-                              </SelectItem>
-                            ))}
-                          </div>
-                        </SelectContent>
-                      </Select>
-                      <Select className="w-1/2">
-                        <SelectTrigger className="w-[280px]">
-                          <SelectValue placeholder="Name" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="new">Newest first</SelectItem>
-                          <SelectItem value="old">Oldest first</SelectItem>
-                          <SelectItem value="system">System</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <Button className="rounded-[20px] w-full bg-[#16A34A]">
-                      Add Category
-                    </Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
+              <AddCategory />
             </div>
             <div className="flex flex-col gap-[16px]">
               <div className="font-semibold">Amount range</div>

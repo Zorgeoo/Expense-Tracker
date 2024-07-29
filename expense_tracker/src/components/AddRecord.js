@@ -22,6 +22,7 @@ import {
 import TimePicker from "react-time-picker";
 import TimePickerComponent from "@/assets/TImePicker";
 import CustomTimePicker from "@/assets/TImePicker";
+import AddCategory from "@/assets/AddCategory";
 
 export const AddRecord = ({ title }) => {
   const [buttonColor, setButtonColor] = useState("expense");
@@ -77,19 +78,20 @@ export const AddRecord = ({ title }) => {
                       <SelectValue placeholder="Choose" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="new">Newest first</SelectItem>
+                      <AddCategory />
                       <SelectItem value="old">Oldest first</SelectItem>
                       <SelectItem value="system">System</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="flex gap-3 ">
-                  <div className="flex-1">
+                <div className="flex gap-3 border items-center">
+                  <div className="w-1/2 flex flex-col justify-between">
                     <div>Date</div>
                     <DatePickerDemo />
                   </div>
-                  <div>
-                    <CustomTimePicker />
+                  <div className="w-1/2">
+                    <div>Time</div>
+                    <input type="time" />
                   </div>
                 </div>
                 <Button

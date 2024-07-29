@@ -2,6 +2,7 @@
 
 import { Logo } from "@/assets/Logo";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export const SignUp = () => {
   return (
@@ -9,7 +10,7 @@ export const SignUp = () => {
       <div className="flex w-full h-full">
         <div className="flex-1 m-auto flex flex-col items-center">
           <div className="flex h-fit items-center">
-            <Logo />
+            <Logo width="40" />
             <div>Geld</div>
           </div>
           <div className="flex flex-col items-center py-10">
@@ -39,11 +40,17 @@ export const SignUp = () => {
               placeholder="Re-password"
               className="pl-4 border rounded-lg bg-[#F3F4F6] p-1"
             />
-            <Button className="rounded-[20px]">Log In</Button>
+            <Link href="./SelectCurrency">
+              <Button className="rounded-[20px] w-full bg-[#0166FF]">
+                Log In
+              </Button>
+            </Link>
           </div>
           <div className="flex gap-3 pt-10">
             <div>Already have account?</div>
-            <div className="text-[#0166FF]">Log In</div>
+            <Link href="./LogIn">
+              <div className="text-[#0166FF] cursor-pointer">Log In</div>
+            </Link>
           </div>
         </div>
         <div className="flex-1 bg-[#0166FF] w-full h-full"></div>
