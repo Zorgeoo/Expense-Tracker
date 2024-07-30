@@ -1,0 +1,34 @@
+const express = require("express");
+const cors = require("cors");
+const { accountRouter } = require("./routes/account.route");
+
+const app = express();
+
+app.use(cors());
+
+const port = 3007;
+
+app.get("", (req, res) => {
+  res.send("Heelo beetches");
+});
+
+// app.get("/accounts", (req, res) => {
+//   // return all acounts
+// });
+
+// app.post("/accounts", (req, res) => {
+//   // create a new account
+// });
+
+// app.get("/categories", (req, res) => {
+//   // return all categories
+// });
+
+// app.post("/categories", (req, res) => {
+//   // create a new category
+// });
+app.use("/accounts", accountRouter);
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
