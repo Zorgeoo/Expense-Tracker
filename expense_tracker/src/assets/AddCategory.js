@@ -56,13 +56,13 @@ const iconData = [
 ];
 
 const colors = [
-  { color: "blue" },
-  { color: "blue" },
-  { color: "green" },
-  { color: "yellow" },
-  { color: "orange" },
-  { color: "pink" },
-  { color: "red" },
+  { color: "#0166FF" },
+  { color: "#00b3fe" },
+  { color: "#41CC00" },
+  { color: "#F9D100" },
+  { color: "#FF7B01" },
+  { color: "#AE01FF" },
+  { color: "#FF0101" },
 ];
 import { DarkBlue } from "../../public/darkBlue";
 import { Blue } from "../../public/blue";
@@ -103,7 +103,7 @@ export const AddCategory = () => {
 
                     return (
                       <SelectItem
-                        className={`w-fit h-fit flex justify-center items-center`}
+                        className={`w-fit h-fit flex justify-center items-center cursor-pointer`}
                         key={index}
                         value={item}
                       >
@@ -122,7 +122,8 @@ export const AddCategory = () => {
                     return (
                       <div
                         onClick={() => setBgColor(item.color)}
-                        className="h-10 w-10 rounded-[50%]"
+                        className="h-6 w-6 border rounded-full cursor-pointer"
+                        style={{ backgroundColor: item.color }}
                       ></div>
                     );
                   })}

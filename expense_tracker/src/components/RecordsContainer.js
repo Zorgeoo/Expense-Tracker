@@ -43,13 +43,7 @@ import { FaArtstation } from "react-icons/fa";
 import { FaBiohazard } from "react-icons/fa";
 import { FaUssunnah } from "react-icons/fa";
 import AddRecord from "./AddRecord";
-import { DarkBlue } from "../../public/darkBlue";
-import { Blue } from "../../public/blue";
-import { Green } from "../../public/green";
-import { Yellow } from "../../public/yellow";
-import { Orange } from "../../public/orange";
-import { Purple } from "../../public/purple";
-import { Red } from "../../public/red";
+
 import AddCategory from "@/assets/AddCategory";
 
 const data = [
