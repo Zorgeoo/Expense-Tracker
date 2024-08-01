@@ -9,6 +9,7 @@ import { Rent } from "@/assets/Rent";
 import { Food } from "@/assets/Food";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { useEffect } from "react";
 import {
   Carousel,
   CarouselContent,

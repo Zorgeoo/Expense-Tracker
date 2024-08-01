@@ -5,6 +5,7 @@ const { accountRouter } = require("./routes/account.route");
 const app = express();
 
 app.use(cors());
+app.use(express.json());
 
 const port = 3007;
 
