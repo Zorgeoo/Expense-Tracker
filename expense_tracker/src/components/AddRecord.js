@@ -24,12 +24,13 @@ import TimePickerComponent from "@/assets/TImePicker";
 import CustomTimePicker from "@/assets/TImePicker";
 import AddCategory from "@/assets/AddCategory";
 
-export const AddRecord = ({ title }) => {
+export const AddRecord = ({ title, amount, date }) => {
   const [buttonColor, setButtonColor] = useState("expense");
 
   const handleButtonColor = (button) => {
     setButtonColor(button);
   };
+
   return (
     <div className="flex">
       <Dialog className="">
@@ -69,7 +70,7 @@ export const AddRecord = ({ title }) => {
                 </div>
                 <div>
                   <div>Amount</div>
-                  <Input type="number" placeholder="₮ 000.00" />
+                  <Input type="number" value={amount} placeholder="₮ 000.00" />
                 </div>
                 <div>
                   <div>Category</div>

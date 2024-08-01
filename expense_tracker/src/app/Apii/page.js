@@ -23,29 +23,20 @@ export const Apii = () => {
     );
     setAccounts([...accounts, response.data]);
   };
-  // const createAccount = async () => {
-  //   const newAccount = {
-  //     title,
-  //     amount,
-  //   };
-  //   const response = await axios.post(
-  //     `http://localhost:3001/accounts`,
-  //     newAccount
-  //   );
-
-  //   setAccounts([...accounts, response.data]);
-  //   console.log(response.data)
-  // };
 
   const deleteAccount = async (id) => {
     const response = await axios.delete(`http://localhost:3007/accounts/${id}`);
     setAccounts(accounts.filter((account) => account.id !== id));
   };
+  const deleteAllAccount = async () => {
+    const response = await axios.delete("http://localhost:3007/accounts/");
+    setAccounts([]);
+    console.log(response.data);
+  };
   return (
     <div>
       <div>
         {accounts.map((item) => {
-          console.log(item, "=======");
           return (
             <div key={item.title}>
               {item.title}-{item.amount}
@@ -61,7 +52,6 @@ export const Apii = () => {
           );
         })}
       </div>
-      <div>HELlo</div>
       <div className="flex gap-5">
         <input
           value={title}
@@ -81,6 +71,7 @@ export const Apii = () => {
         <button className="border" onClick={createAccount}>
           Create
         </button>
+        <button onClick={deleteAllAccount}>Delete all</button>
       </div>
     </div>
   );

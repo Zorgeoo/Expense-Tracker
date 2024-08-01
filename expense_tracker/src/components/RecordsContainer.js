@@ -1,15 +1,12 @@
 "use client";
 import { Arrow } from "@/assets/Arrow";
 import { View } from "@/assets/View";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
-import { Rent } from "@/assets/Rent";
-import { Food } from "@/assets/Food";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import { useEffect } from "react";
+import axios from "axios";
 import {
   Carousel,
   CarouselContent,
@@ -25,19 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RecordCard } from "@/assets/RecordCard";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { useState } from "react";
-import { Textarea } from "@/components/ui/textarea";
-
-import { IconName } from "react-icons/lia";
-import { DatePickerDemo } from "@/assets/DatePicker";
+import { useState, useEffect } from "react";
 import { FaAnchor } from "react-icons/fa";
 import { FaAngellist } from "react-icons/fa";
 import { FaArtstation } from "react-icons/fa";
@@ -111,7 +96,35 @@ export const RecordContainer = () => {
     newValues[index] = Number(newValue);
     setSliderValue(newValues);
   };
+  const [accounts, setAccounts] = useState([]);
+  const [title, setTitle] = useState("");
+  const [amount, setAmount] = useState("");
+  const [date, setDate] = useState("");
+  useEffect(() => {
+    const getData = async () => {
+      const response = await axios.get("http://localhost:3007/accounts");
+      setAccounts(response.data);
+    };
+    getData();
+  }, []);
+  const createAccount = async () => {
+    const newAccount = { title, amount, date };
+    const response = await axios.post(
+      "http://localhost:3007/accounts",
+      newAccount
+    );
+    setAccounts([...accounts, response.data]);
+  };
 
+  const deleteAccount = async (id) => {
+    const response = await axios.delete(`http://localhost:3007/accounts/${id}`);
+    setAccounts(accounts.filter((account) => account.id !== id));
+  };
+  const deleteAllAccount = async () => {
+    const response = await axios.delete("http://localhost:3007/accounts/");
+    setAccounts([]);
+    console.log(response.data);
+  };
   return (
     <div className="bg-[#f6f6f6] py-6">
       <div className="w-[1440px] m-auto flex">
@@ -232,15 +245,59 @@ export const RecordContainer = () => {
           <div className="pl-[30px]">
             <div className="pb-3 pt-6 font-semibold">Today</div>
             <div className="flex flex-col gap-[12px] ">
-              {cardData.map((item) => (
-                <RecordCard
-                  key={item.title}
-                  title={item.title}
-                  icon={item.icon}
-                  time={item.time}
-                  amount={item.amount}
-                />
-              ))}
+              {accounts.map((item, index) => {
+                return (
+                  <div>
+                    {" "}
+                    <RecordCard
+                      key={index}
+                      title={item.title}
+                      amount={item.amount}
+                      date={item.date}
+                    />
+                    <button
+                      onClick={() => {
+                        deleteAccount(item.id);
+                      }}
+                      className="border"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="flex gap-5">
+              <input
+                value={title}
+                placeholder="Category"
+                onChange={(event) => {
+                  setTitle(event.target.value);
+                }}
+                className="border"
+              />
+              <input
+                value={amount}
+                placeholder="Amount"
+                type="number"
+                onChange={(event) => {
+                  setAmount(event.target.value);
+                }}
+                className="border"
+              />
+              <input
+                value={date}
+                placeholder="Date"
+                type="date"
+                onChange={(event) => {
+                  setDate(event.target.value);
+                }}
+                className="border"
+              />
+              <button className="border" onClick={createAccount}>
+                Create
+              </button>
+              <button onClick={deleteAllAccount}>Delete all</button>
             </div>
           </div>
           <div className="pl-[30px]">
