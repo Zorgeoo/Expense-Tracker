@@ -21,6 +21,7 @@ import { FaAngellist } from "react-icons/fa";
 import { FaArtstation } from "react-icons/fa";
 import { FaBiohazard } from "react-icons/fa";
 import { FaUssunnah } from "react-icons/fa";
+import { Input } from "@/components/ui/input";
 
 const iconData = [
   { img: FaAnchor },
@@ -64,20 +65,12 @@ const colors = [
   { color: "#AE01FF" },
   { color: "#FF0101" },
 ];
-import { DarkBlue } from "../../public/darkBlue";
-import { Blue } from "../../public/blue";
-import { Green } from "../../public/green";
-import { Yellow } from "../../public/yellow";
-import { Orange } from "../../public/orange";
-import { Purple } from "../../public/purple";
-import { Red } from "../../public/red";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-export const AddCategory = () => {
+import { DialogClose } from "@radix-ui/react-dialog";
+export const AddCategory = ({ onchange, value, onclick }) => {
   const [bgColor, setBgColor] = useState(null);
-  const handleBgColor = (color) => {
-    setBgColor(color);
-  };
+
   return (
     <Dialog>
       <DialogTrigger>
@@ -130,20 +123,21 @@ export const AddCategory = () => {
                 </div>
               </SelectContent>
             </Select>
-            <Select className="w-1/2">
-              <SelectTrigger className="w-[280px]">
-                <SelectValue placeholder="Name" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="new">Newest first</SelectItem>
-                <SelectItem value="old">Oldest first</SelectItem>
-                <SelectItem value="system">System</SelectItem>
-              </SelectContent>
-            </Select>
+            <Input
+              className="w-[300px]"
+              placeholder="name"
+              onChange={onchange}
+              value={value}
+            />
           </div>
-          <Button className="rounded-[20px] w-full bg-[#16A34A]">
-            Add Category
-          </Button>
+          <DialogClose>
+            <Button
+              className="rounded-[20px] w-full bg-[#16A34A]"
+              onClick={onclick}
+            >
+              Add Category
+            </Button>
+          </DialogClose>
         </div>
       </DialogContent>
     </Dialog>

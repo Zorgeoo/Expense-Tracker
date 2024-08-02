@@ -100,6 +100,7 @@ export const RecordContainer = () => {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState("");
+
   useEffect(() => {
     const getData = async () => {
       const response = await axios.get("http://localhost:3007/accounts");
@@ -125,6 +126,41 @@ export const RecordContainer = () => {
     setAccounts([]);
     console.log(response.data);
   };
+  //Category
+  const [categories, setCategories] = useState([]);
+  const [categoryTitle, setCategoryTitle] = useState("");
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await axios.get("http://localhost:3007/categories/");
+        console.log("KKKK", response.data);
+        setCategories(response.data);
+      } catch (error) {
+        console.log(error, "LLL");
+      }
+      // setCategories(response.data);
+    };
+    getData();
+  }, []);
+  const createCategory = async () => {
+    const newCategory = { categoryTitle };
+    const response = await axios.post(
+      "http://localhost:3007/categories",
+      newCategory
+    );
+    setCategories([...categories, response.data]);
+  };
+  const deleteCategory = async (id) => {
+    const response = await axios.delete(
+      `http://localhost:3007/categories/${id}`
+    );
+    setCategories(categories.filter((category) => category.id !== id));
+  };
+  // const deleteAllCategory = async () => {
+  //   const response = await axios.delete("http://localhost:3007/categories");
+  //   setCategories([]);
+  //   console.log(response.data);
+  // };
   return (
     <div className="bg-[#f6f6f6] py-6">
       <div className="w-[1440px] m-auto flex">
@@ -162,17 +198,35 @@ export const RecordContainer = () => {
                 <div className="text-gray-400">Clear</div>
               </div>
               <div>
-                {data.map((item) => (
-                  <div className="flex items-center justify-between w-full">
-                    <div className="flex gap-[8px] items-center ">
-                      <View />
-                      <div className="py-[8px]">{item.title}</div>
+                {categories.map((item, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between w-full"
+                    >
+                      <div className="flex gap-[8px] items-center ">
+                        <View />
+                        <div className="py-[8px]">{item.categoryTitle}</div>
+                      </div>
+                      <Arrow />
+                      <button
+                        onClick={() => {
+                          deleteCategory(item.id);
+                        }}
+                      >
+                        Delete
+                      </button>
                     </div>
-                    <Arrow />
-                  </div>
-                ))}
+                  );
+                })}
               </div>
-              <AddCategory />
+              <AddCategory
+                onclick={createCategory}
+                value={categoryTitle}
+                onchange={(event) => {
+                  setCategoryTitle(event.target.value);
+                }}
+              />
             </div>
             <div className="flex flex-col gap-[16px]">
               <div className="font-semibold">Amount range</div>

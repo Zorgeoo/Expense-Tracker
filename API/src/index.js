@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const { accountRouter } = require("./routes/account.route");
+const { categoryRouter } = require("./routes/category.route");
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.get("", (req, res) => {
 //   // create a new category
 // });
 app.use("/accounts", accountRouter);
+app.use("/categories", categoryRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

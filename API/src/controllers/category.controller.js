@@ -3,53 +3,52 @@ const fs = require("fs");
 const path = require("path");
 const { v4 } = require("uuid");
 
-const getAllAccounts = async (req, res) => {
+const getAllCategories = async (req, res) => {
   try {
-    const filePath = path.join(__dirname, "..", "data", "accounts.json");
+    const filePath = path.join(__dirname, "..", "data", "category.json");
 
     const rawData = fs.readFileSync(filePath);
 
-    const accounts = JSON.parse(rawData);
+    const categories = JSON.parse(rawData);
 
-    res.json(accounts);
+    res.json(categories);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "internal server error" });
   }
 };
 
-const createAccount = async (req, res) => {
-  console.log(req.body, "Henlo");
+const createCategory = async (req, res) => {
   try {
-    const filePath = path.join(__dirname, "..", "data", "accounts.json");
+    const filePath = path.join(__dirname, "..", "data", "category.json");
 
     const rawData = fs.readFileSync(filePath);
 
-    const accounts = JSON.parse(rawData);
+    const categories = JSON.parse(rawData);
 
-    const newAccount = { ...req.body, id: v4() };
+    const newCategory = { ...req.body, id: v4() };
 
-    console.log(newAccount);
-    accounts.push(newAccount);
-    fs.writeFileSync(filePath, JSON.stringify(accounts, null, 2));
-    res.json(newAccount);
+    categories.push(newCategory);
+
+    fs.writeFileSync(filePath, JSON.stringify(categories, null, 2));
+    res.json(newCategory);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "internal server error" });
   }
 };
 
-const deleteAccount = async (req, res) => {
+const deleteCategory = async (req, res) => {
   try {
     const filePath = path.join(__dirname, "..", "data", "accounts.json");
     const { id } = req.params;
 
     const rawData = fs.readFileSync(filePath);
-    let accounts = JSON.parse(rawData);
+    let categories = JSON.parse(rawData);
 
-    accounts = accounts.filter((account) => account.id !== id);
+    categories = categories.filter((category) => category.id !== id);
 
-    fs.writeFileSync(filePath, JSON.stringify(accounts, null, 2));
+    fs.writeFileSync(filePath, JSON.stringify(categories, null, 2));
     res.status(204).end();
   } catch (error) {
     console.error("Error deleting account:", error);
@@ -57,17 +56,17 @@ const deleteAccount = async (req, res) => {
   }
 };
 
-const deleteAllAccount = async (req, res) => {
+const deleteAllCategory = async (req, res) => {
   try {
     const filePath = path.join(__dirname, "..", "data", "accounts.json");
 
     const rawData = fs.readFileSync(filePath);
 
-    const accounts = JSON.parse(rawData);
+    const categories = JSON.parse(rawData);
 
-    accounts.splice(0, accounts.length);
+    categories.splice(0, categories.length);
 
-    fs.writeFileSync(filePath, JSON.stringify(accounts));
+    fs.writeFileSync(filePath, JSON.stringify(categories));
     console.log(req.body);
     res.json({ message: "Success" });
   } catch (error) {
@@ -76,8 +75,8 @@ const deleteAllAccount = async (req, res) => {
   }
 };
 module.exports = {
-  getAllAccounts,
-  createAccount,
-  deleteAccount,
-  deleteAllAccount,
+  getAllCategories,
+  createCategory,
+  deleteCategory,
+  deleteAllCategory,
 };
