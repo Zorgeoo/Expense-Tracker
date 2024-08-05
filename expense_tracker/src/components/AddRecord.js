@@ -1,7 +1,8 @@
 "use client";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import axios from "axios";
 import {
   Select,
   SelectContent,
@@ -19,14 +20,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import TimePicker from "react-time-picker";
-import TimePickerComponent from "@/assets/TImePicker";
-import CustomTimePicker from "@/assets/TImePicker";
 import AddCategory from "@/assets/AddCategory";
 import { useFormik } from "formik";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { TransactionContext } from "./utils/context";
+import { CiHome } from "react-icons/ci";
+import { CiGift } from "react-icons/ci";
+import { IoFastFoodOutline } from "react-icons/io5";
+import { RiDrinksLine } from "react-icons/ri";
+import { PiTaxi } from "react-icons/pi";
+import { CiShoppingCart } from "react-icons/ci";
 
-export const AddRecord = ({ title, amount }) => {
+export const AddRecord = ({ title, addClick }) => {
   const [buttonColor, setButtonColor] = useState("expense");
 
   const handleButtonColor = (button) => {
@@ -44,6 +49,30 @@ export const AddRecord = ({ title, amount }) => {
       console.log("first message", formik.values);
     },
   });
+
+  const { transInfo, setTransInfo } = useContext(TransactionContext);
+  console.log(transInfo);
+
+  const createCategory = async () => {
+    const newCategory = { categoryTitle };
+    const response = await axios.post(
+      "http://localhost:3007/categories",
+      newCategory
+    );
+    setCategories([...categories, response.data]);
+  };
+  const [accounts, setAccounts] = useState([]);
+  const [categoryTitle, setCategoryTitle] = useState("");
+  const [categories, setCategories] = useState([]);
+
+  const categoriesData = [
+    { name: "Home", icon: <CiHome /> },
+    { name: "Gift", icon: <CiGift /> },
+    { name: "Food", icon: <IoFastFoodOutline /> },
+    { name: "Drink", icon: <RiDrinksLine /> },
+    { name: "Taxi", icon: <PiTaxi /> },
+    { name: "Shopping", icon: <CiShoppingCart /> },
+  ];
 
   return (
     <div className="flex">
@@ -88,8 +117,13 @@ export const AddRecord = ({ title, amount }) => {
                     <Input
                       type="number"
                       name="amount"
-                      value={formik.values.amount}
-                      onChange={formik.handleChange}
+                      value={transInfo.amount}
+                      onChange={(event) =>
+                        setTransInfo({
+                          ...transInfo,
+                          amount: event.target.value,
+                        })
+                      }
                       placeholder="₮ 000.00"
                     />
                   </div>
@@ -100,20 +134,51 @@ export const AddRecord = ({ title, amount }) => {
                         <SelectValue placeholder="Choose" />
                       </SelectTrigger>
                       <SelectContent>
-                        <AddCategory />
-                        <SelectItem value="old">Oldest first</SelectItem>
-                        <SelectItem value="system">System</SelectItem>
+                        <AddCategory
+                          onclick={createCategory}
+                          value={categoryTitle}
+                          onchange={(event) => {
+                            setCategoryTitle(event.target.value);
+                          }}
+                        />
+                        {categoriesData.map((item, index) => {
+                          return (
+                            <SelectItem value={item.name}>
+                              <div className="flex gap-3 justify-center items-center">
+                                <div>{item.icon}</div>
+                                <div>{item.name}</div>
+                              </div>
+                            </SelectItem>
+                          );
+                        })}
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="flex gap-3 border items-center">
                     <div className="w-1/2 flex flex-col justify-between">
                       <div>Date</div>
-                      <DatePickerDemo />
+                      <input
+                        placeholder="date"
+                        type="Date"
+                        onChange={(event) =>
+                          setTransInfo({
+                            ...transInfo,
+                            date: event.target.value,
+                          })
+                        }
+                      />
                     </div>
                     <div className="w-1/2">
                       <div>Time</div>
-                      <input type="time" />
+                      <input
+                        type="time"
+                        onChange={(event) =>
+                          setTransInfo({
+                            ...transInfo,
+                            time: event.target.value,
+                          })
+                        }
+                      />
                     </div>
                   </div>
                   <DialogClose>
@@ -124,13 +189,11 @@ export const AddRecord = ({ title, amount }) => {
                           ? "bg-[#16A34A] text-white"
                           : "bg-[#0166FF] text-white"
                       }`}
+                      onClick={addClick}
                     >
                       Add Record
                     </Button>
                   </DialogClose>
-                  <button type="submit" onClick={formik.handleSubmit}>
-                    Submit
-                  </button>
                 </div>
                 <div className="w-1/2 py-5 px-6 border">
                   <div>
@@ -139,7 +202,16 @@ export const AddRecord = ({ title, amount }) => {
                   </div>
                   <div>
                     <div className="mt-[19px]">Note</div>
-                    <Textarea className="h-[246px]" placeholder="Write here" />
+                    <Textarea
+                      onChange={(event) =>
+                        setTransInfo({
+                          ...transInfo,
+                          note: event.target.value,
+                        })
+                      }
+                      className="h-[246px]"
+                      placeholder="Write here"
+                    />
                   </div>
                 </div>
               </div>

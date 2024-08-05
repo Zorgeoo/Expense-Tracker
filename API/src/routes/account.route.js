@@ -12,7 +12,6 @@ const accountRouter = Router();
 accountRouter
   .get("/", getAllAccounts)
   .post("/", createAccount)
-  .delete("/", deleteAllAccount)
   .delete("/:id", deleteAccount);
 
 module.exports = { accountRouter };

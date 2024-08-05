@@ -12,7 +12,6 @@ const categoryRouter = Router();
 categoryRouter
   .get("/", getAllCategories)
   .post("/", createCategory)
-  .delete("/", deleteCategory)
-  .delete("/", deleteAllCategory);
+  .delete("/:id", deleteCategory);
 
 module.exports = { categoryRouter };

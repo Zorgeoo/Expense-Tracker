@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RecordCard } from "@/assets/RecordCard";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { FaAnchor } from "react-icons/fa";
 import { FaAngellist } from "react-icons/fa";
 import { FaArtstation } from "react-icons/fa";
@@ -31,6 +31,7 @@ import { FaUssunnah } from "react-icons/fa";
 import AddRecord from "./AddRecord";
 
 import AddCategory from "@/assets/AddCategory";
+import { TransactionContext } from "./utils/context";
 
 const data = [
   { title: "Food & Drinks" },
@@ -44,14 +45,6 @@ const data = [
   { title: "Investments" },
   { title: "Income" },
   { title: "Others" },
-];
-
-const cardData = [
-  { title: "Food & Drinks", time: "14:00", amount: 2000 },
-  { title: "Food & Drinks", time: "14:00", amount: 1000 },
-  { title: "Food & Drinks", time: "14:00", amount: 2000 },
-  { title: "Food & Drinks", time: "14:00", amount: -1000 },
-  { title: "Rent", time: "14:00", amount: 1000 },
 ];
 
 const iconData = [
@@ -97,9 +90,11 @@ export const RecordContainer = () => {
     setSliderValue(newValues);
   };
   const [accounts, setAccounts] = useState([]);
-  const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState("");
-  const [date, setDate] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [categoryTitle, setCategoryTitle] = useState("");
+
+  const { transInfo, setTransInfo } = useContext(TransactionContext);
+  console.log(transInfo);
 
   useEffect(() => {
     const getData = async () => {
@@ -109,10 +104,10 @@ export const RecordContainer = () => {
     getData();
   }, []);
   const createAccount = async () => {
-    const newAccount = { title, amount, date };
+    // const newAccount = { title, amount, date };
     const response = await axios.post(
       "http://localhost:3007/accounts",
-      newAccount
+      transInfo
     );
     setAccounts([...accounts, response.data]);
   };
@@ -127,17 +122,12 @@ export const RecordContainer = () => {
     console.log(response.data);
   };
   //Category
-  const [categories, setCategories] = useState([]);
-  const [categoryTitle, setCategoryTitle] = useState("");
   useEffect(() => {
     const getData = async () => {
       try {
         const response = await axios.get("http://localhost:3007/categories/");
-        console.log("KKKK", response.data);
         setCategories(response.data);
-      } catch (error) {
-        console.log(error, "LLL");
-      }
+      } catch (error) {}
       // setCategories(response.data);
     };
     getData();
@@ -168,7 +158,7 @@ export const RecordContainer = () => {
           <div className="flex flex-col gap-[24px] w-full ">
             <div className="flex flex-col gap-[24px]">
               <div className="font-semibold text-[24px]">Record</div>
-              <AddRecord title="+Add" />
+              <AddRecord title="+Add" addClick={createAccount} />
               <input
                 placeholder="Search"
                 type="search"
@@ -198,6 +188,20 @@ export const RecordContainer = () => {
                 <div className="text-gray-400">Clear</div>
               </div>
               <div>
+                {data.map((item, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between w-full"
+                    >
+                      <div className="flex gap-[8px] items-center ">
+                        <View />
+                        <div className="py-[8px]">{item.title}</div>
+                      </div>
+                      <Arrow />
+                    </div>
+                  );
+                })}
                 {categories.map((item, index) => {
                   return (
                     <div
@@ -308,6 +312,7 @@ export const RecordContainer = () => {
                       title={item.title}
                       amount={item.amount}
                       date={item.date}
+                      time={item.time}
                     />
                     <button
                       onClick={() => {
@@ -321,52 +326,10 @@ export const RecordContainer = () => {
                 );
               })}
             </div>
-            <div className="flex gap-5">
-              <input
-                value={title}
-                placeholder="Category"
-                onChange={(event) => {
-                  setTitle(event.target.value);
-                }}
-                className="border"
-              />
-              <input
-                value={amount}
-                placeholder="Amount"
-                type="number"
-                onChange={(event) => {
-                  setAmount(event.target.value);
-                }}
-                className="border"
-              />
-              <input
-                value={date}
-                placeholder="Date"
-                type="date"
-                onChange={(event) => {
-                  setDate(event.target.value);
-                }}
-                className="border"
-              />
-              <button className="border" onClick={createAccount}>
-                Create
-              </button>
-              <button onClick={deleteAllAccount}>Delete all</button>
-            </div>
           </div>
           <div className="pl-[30px]">
             <div className="pb-3 pt-6 font-semibold">Yesterday</div>
-            <div className="flex flex-col gap-[12px] ">
-              {cardData.map((item) => (
-                <RecordCard
-                  key={item.title}
-                  title={item.title}
-                  icon={item.icon}
-                  time={item.time}
-                  amount={item.amount}
-                />
-              ))}
-            </div>
+            <div className="flex flex-col gap-[12px] "></div>
           </div>
         </div>
       </div>

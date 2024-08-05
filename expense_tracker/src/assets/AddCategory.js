@@ -14,8 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { IconName } from "react-icons/lia";
-import { DatePickerDemo } from "@/assets/DatePicker";
 import { FaAnchor } from "react-icons/fa";
 import { FaAngellist } from "react-icons/fa";
 import { FaArtstation } from "react-icons/fa";
@@ -65,6 +63,7 @@ const colors = [
   { color: "#AE01FF" },
   { color: "#FF0101" },
 ];
+
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { DialogClose } from "@radix-ui/react-dialog";
@@ -93,7 +92,6 @@ export const AddCategory = ({ onchange, value, onclick }) => {
                 <div className="grid grid-cols-5 p-6 gap-3 border-b-2">
                   {iconData.map((item, index) => {
                     const Icon = item.img;
-
                     return (
                       <SelectItem
                         className={`w-fit h-fit flex justify-center items-center cursor-pointer`}
@@ -111,7 +109,7 @@ export const AddCategory = ({ onchange, value, onclick }) => {
                   {/* <div onClick={() => setBgColor("blue")}>
                     <DarkBlue />
                   </div> */}
-                  {colors.map((item) => {
+                  {colors.map((item, index) => {
                     return (
                       <div
                         onClick={() => setBgColor(item.color)}
