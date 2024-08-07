@@ -57,27 +57,26 @@ const deleteAccount = async (req, res) => {
   }
 };
 
-const deleteAllAccount = async (req, res) => {
-  try {
-    const filePath = path.join(__dirname, "..", "data", "accounts.json");
+// const deleteAllAccount = async (req, res) => {
+//   try {
+//     const filePath = path.join(__dirname, "..", "data", "accounts.json");
 
-    const rawData = fs.readFileSync(filePath);
+//     const rawData = fs.readFileSync(filePath);
 
-    const accounts = JSON.parse(rawData);
+//     const accounts = JSON.parse(rawData);
 
-    accounts.splice(0, accounts.length);
+//     accounts.splice(0, accounts.length);
 
-    fs.writeFileSync(filePath, JSON.stringify(accounts));
-    console.log(req.body);
-    res.json({ message: "Success" });
-  } catch (error) {
-    console.error("Error deleting account:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
+//     fs.writeFileSync(filePath, JSON.stringify(accounts));
+//     console.log(req.body);
+//     res.json({ message: "Success" });
+//   } catch (error) {
+//     console.error("Error deleting account:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// };
 module.exports = {
   getAllAccounts,
   createAccount,
   deleteAccount,
-  deleteAllAccount,
 };

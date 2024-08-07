@@ -1,18 +1,20 @@
 [
   {
-    "categoryTitle": "2121",
-    "id": "d729ca2c-39f6-48c2-91d7-090076b4b33c"
+    "name": "asa",
+    "icon": "FaBus",
+    "color": "#F9D100",
+    "id": "e64ccd9b-73ec-41b2-a95e-94c235acdacd"
   },
   {
-    "categoryTitle": "1221",
-    "id": "94919d0d-59ea-44d6-a882-a36f364d2ae4"
+    "name": "sasa",
+    "icon": "FaApple",
+    "color": "#AE01FF",
+    "id": "8f287733-b7bb-4b4e-9c18-e4f144126764"
   },
   {
-    "categoryTitle": "21212121",
-    "id": "9df840ae-9ac3-4fef-8bea-2d0da4a141a6"
-  },
-  {
-    "categoryTitle": "",
-    "id": "bb9a0101-c819-49b6-bf2b-3f45913c11f7"
+    "name": "orange",
+    "icon": "FaApple",
+    "color": "#FF7B01",
+    "id": "15abf848-8b20-42e0-999e-805109cfdc1a"
   }
 ]

@@ -10,8 +10,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DatePickerDemo } from "@/assets/DatePicker";
 import { Textarea } from "./ui/textarea";
+import * as Icons from "react-icons/fa";
 import {
   Dialog,
   DialogContent,
@@ -24,12 +24,6 @@ import AddCategory from "@/assets/AddCategory";
 import { useFormik } from "formik";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { TransactionContext } from "./utils/context";
-import { CiHome } from "react-icons/ci";
-import { CiGift } from "react-icons/ci";
-import { IoFastFoodOutline } from "react-icons/io5";
-import { RiDrinksLine } from "react-icons/ri";
-import { PiTaxi } from "react-icons/pi";
-import { CiShoppingCart } from "react-icons/ci";
 
 export const AddRecord = ({ title, addClick }) => {
   const [buttonColor, setButtonColor] = useState("expense");
@@ -37,6 +31,14 @@ export const AddRecord = ({ title, addClick }) => {
   const handleButtonColor = (button) => {
     setButtonColor(button);
   };
+  const {
+    categories,
+    setCategories,
+    transInfo,
+    setTransInfo,
+    categoriez,
+    setCategoriez,
+  } = useContext(TransactionContext);
 
   const formik = useFormik({
     initialValues: {
@@ -46,33 +48,16 @@ export const AddRecord = ({ title, addClick }) => {
     },
     onSubmit: (values) => {
       alert(`hello ${formik.values}`);
-      console.log("first message", formik.values);
     },
   });
 
-  const { transInfo, setTransInfo } = useContext(TransactionContext);
-  console.log(transInfo);
-
   const createCategory = async () => {
-    const newCategory = { categoryTitle };
     const response = await axios.post(
       "http://localhost:3007/categories",
-      newCategory
+      categoriez
     );
     setCategories([...categories, response.data]);
   };
-  const [accounts, setAccounts] = useState([]);
-  const [categoryTitle, setCategoryTitle] = useState("");
-  const [categories, setCategories] = useState([]);
-
-  const categoriesData = [
-    { name: "Home", icon: <CiHome /> },
-    { name: "Gift", icon: <CiGift /> },
-    { name: "Food", icon: <IoFastFoodOutline /> },
-    { name: "Drink", icon: <RiDrinksLine /> },
-    { name: "Taxi", icon: <PiTaxi /> },
-    { name: "Shopping", icon: <CiShoppingCart /> },
-  ];
 
   return (
     <div className="flex">
@@ -97,7 +82,12 @@ export const AddRecord = ({ title, addClick }) => {
                           ? "bg-[#0166FF] text-white"
                           : "bg-transparent"
                       } `}
-                      onClick={() => handleButtonColor("expense")}
+                      onClick={() =>
+                        setTransInfo(
+                          { ...transInfo, type: "exp" },
+                          handleButtonColor("expense")
+                        )
+                      }
                     >
                       Expense
                     </Button>
@@ -107,7 +97,12 @@ export const AddRecord = ({ title, addClick }) => {
                           ? "bg-[#16A34A] text-white"
                           : "bg-transparent"
                       } `}
-                      onClick={() => handleButtonColor("income")}
+                      onClick={() =>
+                        setTransInfo(
+                          { ...transInfo, type: "inc" },
+                          handleButtonColor("income")
+                        )
+                      }
                     >
                       Income
                     </Button>
@@ -129,23 +124,29 @@ export const AddRecord = ({ title, addClick }) => {
                   </div>
                   <div>
                     <div>Category</div>
-                    <Select>
+                    <Select
+                      value={transInfo.category.name}
+                      onValueChange={(event) =>
+                        setTransInfo({
+                          ...transInfo,
+                          category: {
+                            ...transInfo.category,
+                            name: event,
+                          },
+                        })
+                      }
+                    >
                       <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Choose" />
                       </SelectTrigger>
                       <SelectContent>
-                        <AddCategory
-                          onclick={createCategory}
-                          value={categoryTitle}
-                          onchange={(event) => {
-                            setCategoryTitle(event.target.value);
-                          }}
-                        />
-                        {categoriesData.map((item, index) => {
+                        <AddCategory onclick={createCategory} />
+                        {categories.map((item, index) => {
+                          const Icon = Icons[item.icon];
                           return (
-                            <SelectItem value={item.name}>
+                            <SelectItem value={item.name} key={index}>
                               <div className="flex gap-3 justify-center items-center">
-                                <div>{item.icon}</div>
+                                <Icon color={item.color} />
                                 <div>{item.name}</div>
                               </div>
                             </SelectItem>

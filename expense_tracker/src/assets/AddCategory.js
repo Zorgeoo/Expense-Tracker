@@ -14,44 +14,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { FaAnchor } from "react-icons/fa";
-import { FaAngellist } from "react-icons/fa";
-import { FaArtstation } from "react-icons/fa";
-import { FaBiohazard } from "react-icons/fa";
-import { FaUssunnah } from "react-icons/fa";
+
+import * as Icons from "react-icons/fa";
+
 import { Input } from "@/components/ui/input";
+import { useContext } from "react";
+import { TransactionContext } from "@/components/utils/context";
 
 const iconData = [
-  { img: FaAnchor },
-  { img: FaAngellist },
-  { img: FaArtstation },
-  { img: FaBiohazard },
-  { img: FaUssunnah },
-  { img: FaAnchor },
-  { img: FaAngellist },
-  { img: FaArtstation },
-  { img: FaBiohazard },
-  { img: FaUssunnah },
-  { img: FaAnchor },
-  { img: FaAngellist },
-  { img: FaArtstation },
-  { img: FaBiohazard },
-  { img: FaUssunnah },
-  { img: FaAnchor },
-  { img: FaAngellist },
-  { img: FaArtstation },
-  { img: FaBiohazard },
-  { img: FaUssunnah },
-  { img: FaAnchor },
-  { img: FaAngellist },
-  { img: FaArtstation },
-  { img: FaBiohazard },
-  { img: FaUssunnah },
-  { img: FaAnchor },
-  { img: FaAngellist },
-  { img: FaArtstation },
-  { img: FaBiohazard },
-  { img: FaUssunnah },
+  { icon: "FaBus" },
+  { icon: "FaApple" },
+  { icon: "FaBus" },
+  { icon: "FaApple" },
+  { icon: "FaBus" },
+  { icon: "FaApple" },
+  { icon: "FaBus" },
+  { icon: "FaApple" },
+  { icon: "FaBus" },
+  { icon: "FaApple" },
+  { icon: "FaBus" },
+  { icon: "FaApple" },
 ];
 
 const colors = [
@@ -67,8 +49,10 @@ const colors = [
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { DialogClose } from "@radix-ui/react-dialog";
-export const AddCategory = ({ onchange, value, onclick }) => {
+export const AddCategory = ({ onclick }) => {
   const [bgColor, setBgColor] = useState(null);
+  const { categoriez, setCategoriez, transInfo, setTransInfo } =
+    useContext(TransactionContext);
 
   return (
     <Dialog>
@@ -84,14 +68,22 @@ export const AddCategory = ({ onchange, value, onclick }) => {
         </div>
         <div className="p-6 flex flex-col gap-8">
           <div className="flex justify-around gap-3">
-            <Select className="w-1/2">
+            <Select
+              className="w-1/2"
+              onValueChange={(value) =>
+                setCategoriez({
+                  ...categoriez,
+                  icon: value.icon,
+                })
+              }
+            >
               <SelectTrigger className="w-[100px]">
-                <SelectValue placeholder={<FaAnchor />} />
+                <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 <div className="grid grid-cols-5 p-6 gap-3 border-b-2">
                   {iconData.map((item, index) => {
-                    const Icon = item.img;
+                    const Icon = Icons[item.icon];
                     return (
                       <SelectItem
                         className={`w-fit h-fit flex justify-center items-center cursor-pointer`}
@@ -112,7 +104,14 @@ export const AddCategory = ({ onchange, value, onclick }) => {
                   {colors.map((item, index) => {
                     return (
                       <div
-                        onClick={() => setBgColor(item.color)}
+                        key={index}
+                        onClick={() => {
+                          setBgColor(item.color);
+                          setCategoriez({
+                            ...categoriez,
+                            color: item.color,
+                          });
+                        }}
                         className="h-6 w-6 border rounded-full cursor-pointer"
                         style={{ backgroundColor: item.color }}
                       ></div>
@@ -124,8 +123,12 @@ export const AddCategory = ({ onchange, value, onclick }) => {
             <Input
               className="w-[300px]"
               placeholder="name"
-              onChange={onchange}
-              value={value}
+              onChange={(event) =>
+                setCategoriez({
+                  ...categoriez,
+                  name: event.target.value,
+                })
+              }
             />
           </div>
           <DialogClose>

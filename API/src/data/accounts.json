@@ -1,66 +1,15 @@
 [
   {
+    "type": "exp",
     "amount": "12121",
     "category": {
-      "icon": "",
-      "color": null
-    },
-    "date": null,
-    "time": "12:44",
-    "id": "94e93aa6-6c3a-41d3-858e-517512ecaa6c"
-  },
-  {
-    "amount": "1000",
-    "category": {
-      "icon": "",
-      "color": null
-    },
-    "date": null,
-    "time": "12:44",
-    "id": "44b2df26-d8b8-4bef-8ec9-c63d0c3928de"
-  },
-  {
-    "amount": "2345",
-    "category": {
-      "icon": "",
-      "color": null
-    },
-    "date": null,
-    "time": "12:43",
-    "id": "c0d56782-5b0a-42c9-8e06-6e499b0ed5da"
-  },
-  {
-    "amount": "1500",
-    "category": {
       "name": "",
-      "icon": "",
-      "color": null
-    },
-    "date": "2121-02-02",
-    "time": "12:01",
-    "id": "175272db-fcaf-488c-bae1-1f671069810a"
-  },
-  {
-    "amount": "1300",
-    "category": {
-      "name": "",
-      "icon": "",
-      "color": null
-    },
-    "date": "2121-12-01",
-    "time": "12:12",
-    "id": "dec4a4bc-68e6-49be-b5dd-c69a2821b46b"
-  },
-  {
-    "amount": "1212",
-    "category": {
-      "name": "",
-      "icon": "",
+      "icon": null,
       "color": null
     },
     "date": null,
     "time": "",
-    "note": "dasdas",
-    "id": "e96ad17c-59c5-424c-86c4-95b507bb281f"
+    "note": "",
+    "id": "4a78218d-41ea-4d9d-abb9-58d20f63f627"
   }
 ]
