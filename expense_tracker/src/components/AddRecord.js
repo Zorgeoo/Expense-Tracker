@@ -125,16 +125,19 @@ export const AddRecord = ({ title, addClick }) => {
                   <div>
                     <div>Category</div>
                     <Select
-                      value={transInfo.category.name}
-                      onValueChange={(event) =>
-                        setTransInfo({
-                          ...transInfo,
-                          category: {
-                            ...transInfo.category,
-                            name: event,
-                          },
-                        })
-                      }
+                      // value={transInfo.category.name}
+                      // onValueChange={(event) =>
+                      //   setTransInfo({
+                      //     ...transInfo,
+                      //     category: {
+                      //       ...transInfo.category,
+                      //       name: event,
+                      //     },
+                      //   })
+                      // }
+                      onValueChange={(event) => {
+                        setTransInfo({ ...transInfo, category: event });
+                      }}
                     >
                       <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Choose" />
@@ -144,7 +147,7 @@ export const AddRecord = ({ title, addClick }) => {
                         {categories.map((item, index) => {
                           const Icon = Icons[item.icon];
                           return (
-                            <SelectItem value={item.name} key={index}>
+                            <SelectItem value={item} key={index}>
                               <div className="flex gap-3 justify-center items-center">
                                 <Icon color={item.color} />
                                 <div>{item.name}</div>

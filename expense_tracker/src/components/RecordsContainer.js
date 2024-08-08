@@ -23,16 +23,16 @@ import {
 } from "@/components/ui/select";
 import { RecordCard } from "@/assets/RecordCard";
 import { useState, useEffect, useContext } from "react";
-
 import AddRecord from "./AddRecord";
-
 import AddCategory from "@/assets/AddCategory";
 import { TransactionContext } from "./utils/context";
 
 const maxValue = 1000;
 const minValue = 0;
+
 export const RecordContainer = () => {
   const [sliderValue, setSliderValue] = useState([minValue, maxValue]);
+  const [filteredAccounts, setFilteredAccounts] = useState([]);
 
   const handleNewValues = (index, newValue) => {
     const newValues = [...sliderValue];
@@ -50,7 +50,11 @@ export const RecordContainer = () => {
     setCategories,
     accounts,
     setAccounts,
+    sortType,
+    setSortType,
   } = useContext(TransactionContext);
+
+  console.log(sortType);
 
   useEffect(() => {
     const getData = async () => {
@@ -65,7 +69,6 @@ export const RecordContainer = () => {
       "http://localhost:3007/accounts",
       transInfo
     );
-    // setAccounts([...accounts, response.data]);
     getData();
   };
 
@@ -75,12 +78,7 @@ export const RecordContainer = () => {
     );
     setAccounts(accounts.filter((account) => account.id !== id));
   };
-  // const deleteAllAccount = async () => {
-  //   const response = await axios.delete("http://localhost:3007/accounts/");
-  //   setAccounts([]);
-  //   console.log(response.data);
-  // };
-  //Category
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -98,17 +96,36 @@ export const RecordContainer = () => {
     );
     setCategories([...categories, response.data]);
   };
+
   const deleteCategory = async (id) => {
     const response = await axios?.delete(
       `http://localhost:3007/categories/${id}`
     );
     setCategories(categories.filter((category) => category.id !== id));
   };
-  // const deleteAllCategory = async () => {
-  //   const response = await axios.delete("http://localhost:3007/categories");
-  //   setCategories([]);
-  //   console.log(response.data);
-  // };
+  const filterAccountsByType = () => {
+    setFilteredAccounts(
+      accounts.filter((account) => {
+        if (sortType === "all") return true;
+        if (sortType === "inc" && account.type === "inc") return true;
+        if (sortType === "exp" && account.type === "exp") return true;
+        return false;
+      })
+    );
+  };
+
+  useEffect(() => {
+    filterAccountsByType();
+  }, [accounts, sortType]);
+
+  const calculateTotalAmount = (accounts) => {
+    return accounts.reduce((total, account) => {
+      const amount = parseFloat(account.amount); // Convert the amount to a number
+      return total + (account.type === "exp" ? -amount : amount);
+    }, 0);
+  };
+
+  const totalAmount = calculateTotalAmount(accounts);
 
   return (
     <div className="bg-[#f6f6f6] py-6">
@@ -126,17 +143,22 @@ export const RecordContainer = () => {
             </div>
             <div>
               <div className="pb-[16px] font-semibold">Types</div>
-              <RadioGroup defaultValue="option-one">
+              <RadioGroup
+                defaultValue="all"
+                onValueChange={(value) => {
+                  setSortType(value);
+                }}
+              >
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="option-one" id="option-one" />
-                  <Label htmlFor="option-one">All</Label>
+                  <RadioGroupItem value="all" id="all" />
+                  <Label htmlFor="all">All</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="option-two" id="option-two" />
+                  <RadioGroupItem value="inc" id="option-two" />
                   <Label htmlFor="option-two">Income</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="option-three" id="option-three" />
+                  <RadioGroupItem value="exp" id="option-three" />
                   <Label htmlFor="option-three">Expense</Label>
                 </div>
               </RadioGroup>
@@ -237,21 +259,29 @@ export const RecordContainer = () => {
                 <div></div>
               </div>
             </div>
-            <div className="text-gray-600">-35,000$</div>
+            <div
+              className={`text-xl ${
+                totalAmount > 0 ? "text-green-600" : "text-red-600"
+              }`}
+            >
+              {totalAmount}$
+            </div>
           </div>
           <div className="pl-[30px]">
             <div className="pb-3 pt-6 font-semibold">Today</div>
             <div className="flex flex-col gap-[12px] ">
-              {accounts.map((item, index) => {
+              {filteredAccounts.map((item, index) => {
                 return (
                   <div>
                     <RecordCard
                       key={index}
-                      title={item.title}
                       amount={item.amount}
                       date={item.date}
                       time={item.time}
-                      categ={item.category.name}
+                      categ={item.category?.name}
+                      icon={item.category?.icon}
+                      color={item.category?.color}
+                      type={item.type}
                     />
                     <button
                       onClick={() => {
