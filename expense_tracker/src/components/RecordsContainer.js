@@ -6,7 +6,10 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { PiEyeSlashDuotone } from "react-icons/pi";
 import axios from "axios";
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
 import {
   Carousel,
   CarouselContent,
@@ -33,6 +36,8 @@ const minValue = 0;
 export const RecordContainer = () => {
   const [sliderValue, setSliderValue] = useState([minValue, maxValue]);
   const [filteredAccounts, setFilteredAccounts] = useState([]);
+  const [selectedCategories, setselectedCategories] = useState([]);
+  const [hiddenCategories, setHiddenCategories] = useState([]);
 
   const handleNewValues = (index, newValue) => {
     const newValues = [...sliderValue];
@@ -127,6 +132,36 @@ export const RecordContainer = () => {
 
   const totalAmount = calculateTotalAmount(accounts);
 
+  //Filter by category
+  const handleCategoryChange = (categoryId) => {
+    setSelectedCategories((prevSelected) =>
+      prevSelected.includes(categoryId)
+        ? prevSelected.filter((id) => id !== categoryId)
+        : [...prevSelected, categoryId]
+    );
+  };
+
+  const filterAccountsByCategory = (accounts, selectedCategories) => {
+    return accounts.filter(
+      (account) =>
+        selectedCategories.length === 0 ||
+        selectedCategories.includes(account.category.id)
+    );
+  };
+  useEffect(() => {
+    setFilteredAccounts(filterAccountsByCategory(accounts, selectedCategories));
+  }, [accounts, selectedCategories]);
+
+  //HiddenCategory
+
+  const toggleCategory = (id) => {
+    if (hiddenCategories.includes(id)) {
+      setHiddenCategories((prev) => prev.filter((item) => item != id));
+    } else {
+      setHiddenCategories((prev) => [...prev, id]);
+    }
+  };
+
   return (
     <div className="bg-[#f6f6f6] py-6">
       <div className="w-[1440px] m-auto flex">
@@ -174,9 +209,14 @@ export const RecordContainer = () => {
                     <div
                       key={index}
                       className="flex items-center justify-between w-full"
+                      onClick={() => toggleCategory(item.id)}
                     >
                       <div className="flex gap-[8px] items-center ">
-                        <View />
+                        {hiddenCategories.includes(item.id) ? (
+                          <FaEyeSlash />
+                        ) : (
+                          <FaEye />
+                        )}
                         <div className="py-[8px]">{item.name}</div>
                       </div>
                       <Arrow />

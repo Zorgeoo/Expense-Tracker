@@ -125,16 +125,6 @@ export const AddRecord = ({ title, addClick }) => {
                   <div>
                     <div>Category</div>
                     <Select
-                      // value={transInfo.category.name}
-                      // onValueChange={(event) =>
-                      //   setTransInfo({
-                      //     ...transInfo,
-                      //     category: {
-                      //       ...transInfo.category,
-                      //       name: event,
-                      //     },
-                      //   })
-                      // }
                       onValueChange={(event) => {
                         setTransInfo({ ...transInfo, category: event });
                       }}
